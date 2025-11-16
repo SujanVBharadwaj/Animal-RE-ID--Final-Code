@@ -43,7 +43,7 @@ Both models are fully integrated into the detection process.
 
 <img width="1144" height="495" alt="image" src="https://github.com/user-attachments/assets/2bbf71a0-2898-43f8-bc5d-8789f944d0f2" />
 
-# 🚀 **Outout Screenshots**
+# 🚀 **Output Screenshots**
 
 <img width="1318" height="242" alt="Screenshot 2025-11-16 120642" src="https://github.com/user-attachments/assets/a295d6f1-f6ee-41d1-a76f-49aa1ca0c129" />
 
