@@ -49,4 +49,9 @@ Both models are fully integrated into the detection process.
 
 <img width="1213" height="343" alt="Screenshot 2025-11-16 120651" src="https://github.com/user-attachments/assets/75546de1-928d-47f3-8fa0-633ca875c407" />
 
+<img width="1022" height="721" alt="Screenshot 2025-11-16 124205" src="https://github.com/user-attachments/assets/ccd64c45-bba6-4d6b-bae7-c150d2b91a2a" />
+
+<img width="1032" height="428" alt="Screenshot 2025-11-16 124214" src="https://github.com/user-attachments/assets/e869e3e6-a720-4134-ba3a-c815155e4e46" />
+
+
 
