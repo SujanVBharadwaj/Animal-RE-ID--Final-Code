@@ -1,0 +1,7 @@
+{
+  "predicted_label": "deer",
+  "feature_dim_used": 2048,
+  "feature_type": "deep",
+  "precision": 1.0,
+  "recall": 1.0
+}

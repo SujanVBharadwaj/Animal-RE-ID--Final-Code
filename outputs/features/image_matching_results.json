@@ -1,0 +1,54 @@
+{
+  "input_image": "D:\\final_project_code\\outputs\\crops\\tiger\\new_tiger.jpg",
+  "ranked_gallery": [
+    {
+      "rank": 1,
+      "id": "tiger_622",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_002175.jpg",
+      "deep_dim": 2048,
+      "pattern_dim": 202,
+      "cosine_score": 0.8738290071487427
+    },
+    {
+      "rank": 2,
+      "id": "tiger_356",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_001205.jpg",
+      "deep_dim": 2048,
+      "pattern_dim": 202,
+      "cosine_score": 0.87138432264328
+    },
+    {
+      "rank": 3,
+      "id": "tiger_1345",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_004900.jpg",
+      "deep_dim": 2048,
+      "pattern_dim": 202,
+      "cosine_score": 0.8682066202163696
+    },
+    {
+      "rank": 4,
+      "id": "tiger_254",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_000867.jpg",
+      "deep_dim": 2048,
+      "pattern_dim": 202,
+      "cosine_score": 0.8670437932014465
+    },
+    {
+      "rank": 5,
+      "id": "tiger_554",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_001923.jpg",
+      "deep_dim": 2048,
+      "pattern_dim": 202,
+      "cosine_score": 0.8662161231040955
+    }
+  ],
+  "metrics": {
+    "precision": 1.0,
+    "recall": 0.004
+  }
+}
