@@ -14831,5 +14831,40 @@
     "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\new_tiger.jpg",
     "deep_dim": 2048,
     "pattern_dim": 202
+  },
+  {
+    "id": "deer_2120",
+    "class": "deer",
+    "image_path": "D:\\final_project_code\\outputs\\crops\\deer\\new_image2de.jpeg",
+    "deep_dim": 2048,
+    "pattern_dim": 202
+  },
+  {
+    "id": "tiger_2121",
+    "class": "tiger",
+    "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\new_tiger.jpg",
+    "deep_dim": 2048,
+    "pattern_dim": 202
+  },
+  {
+    "id": "tiger_2122",
+    "class": "tiger",
+    "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\000001.jpg",
+    "deep_dim": 2048,
+    "pattern_dim": 202
+  },
+  {
+    "id": "tiger_2123",
+    "class": "tiger",
+    "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\auto_crop_000001.jpg",
+    "deep_dim": 2048,
+    "pattern_dim": 202
+  },
+  {
+    "id": "tiger_2124",
+    "class": "tiger",
+    "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\auto_crop_000001.jpg",
+    "deep_dim": 2048,
+    "pattern_dim": 202
   }
 ]

@@ -86,7 +86,7 @@ def image_based_matching(input_image_path, top_k=5):
     precision = round(len(relevant) / len(ranked_gallery), 3)
     recall = round(len(relevant) / sum(1 for m in metadata if m["class"] == top_class), 3)
 
-    metrics = {"precision": precision, "recall": recall}
+    metrics = {"precision": precision}
 
     # --- Save result JSON ---
     result = {

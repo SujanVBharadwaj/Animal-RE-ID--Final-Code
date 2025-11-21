@@ -1,0 +1,56 @@
+
+# Python cache folders
+__pycache__/
+pycache/
+
+# Virtual environments
+venv/
+env/
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Build / logs
+logs/
+temp/
+tmp/
+
+# ML model files (stored in folders instead of patterns)
+models/
+checkpoints/
+
+# Data folders
+dataset/
+datasets/
+data/
+outputs/
+results/
+
+# YOLO / Ultralytics default folders
+runs/
+labels/
+training/
+
+# Generated indices
+faiss_index/
+indexes/
+
+# Project-specific heavy folders
+crops/
+detections/
+features/
+patterns/
+
+# Videos, images, and large assets (folder-level only)
+videos/
+images/
+assets/
+
+# Compiled bytecode
+build/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db

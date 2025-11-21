@@ -1,95 +1,138 @@
-# recall.py — Top-1 retrieval + auto-add unknown images to FAISS + display best match
+# recall.py — Auto-crop + FAISS similarity check + intelligent auto-add + ReID
+
 import json
-import faiss
 import shutil
-import numpy as np
 import cv2
+import numpy as np
+import faiss
 from pathlib import Path
+from ultralytics import YOLO
+
 from image_based_mapping import image_based_matching
 from feature_extraction import extract_features
 from patternextract import extract_pattern
 from my_utils.config import FEATURES_DIR, CROPS_DIR, FAISS_INDEX_PATH
 
 
-# ------------------------------------------------------------
-# Utility: Check if image is already in combined_feature_db
-# ------------------------------------------------------------
-def image_exists_in_db(img_path: Path):
-    meta_path = FEATURES_DIR / "combined_feature_db.json"
-    if not meta_path.exists():
-        return False
+# -------------------------------------------------------------------------
+# 1. AUTO-CROPPING USING YOLOv11
+# -------------------------------------------------------------------------
+YOLO_MODEL = YOLO("yolo11n.pt")
 
-    with open(meta_path, "r") as f:
-        meta = json.load(f)
+def autocrop_if_needed(img_path: Path):
+    """
+    Automatically crops an image using YOLOv11.
+    If already cropped or no detection, returns original image path.
+    """
+    img = cv2.imread(str(img_path))
+    if img is None:
+        return img_path
 
-    normalized = str(img_path).replace("\\", "/").lower()
+    results = YOLO_MODEL(img, conf=0.25, verbose=False)
+    result = results[0]
 
-    for entry in meta:
-        if entry["image_path"].replace("\\", "/").lower() == normalized:
-            return True
+    if len(result.boxes) == 0:
+        return img_path
+
+    # Choose largest box
+    box = max(
+        result.boxes,
+        key=lambda b: (b.xyxy[0][2] - b.xyxy[0][0]) * (b.xyxy[0][3] - b.xyxy[0][1])
+    )
+    x1, y1, x2, y2 = map(int, box.xyxy[0])
+
+    crop = img[y1:y2, x1:x2]
+    cropped_path = img_path.parent / f"auto_crop_{img_path.name}"
+    cv2.imwrite(str(cropped_path), crop)
+
+    print(f"[INFO] Auto-cropped → {cropped_path}")
+    return cropped_path
+
+
+# -------------------------------------------------------------------------
+# 2. FAISS SIMILARITY CHECK (NOT PATH CHECK)
+# -------------------------------------------------------------------------
+def image_exists_in_db_faiss(img_path: Path, threshold=0.45):
+    """
+    Checks if the input image already exists in FAISS database
+    based on similarity score (distance), not path matching.
+    """
+    deep = extract_features(img_path)
+    patt = extract_pattern(img_path)
+
+    deep_norm = deep / (np.linalg.norm(deep) + 1e8)
+    patt_norm = patt / (np.linalg.norm(patt) + 1e8)
+    query_vec = np.concatenate([deep_norm, patt_norm]).astype("float32").reshape(1, -1)
+
+    index = faiss.read_index(str(FAISS_INDEX_PATH))
+    meta = json.load(open(FEATURES_DIR / "combined_feature_db.json", "r"))
+
+    distances, indices = index.search(query_vec, 1)
+    best_distance = distances[0][0]
+    best_idx = indices[0][0]
+
+    print(f"[INFO] Nearest FAISS distance = {best_distance:.4f}")
+
+    if best_distance < threshold:
+        print(f"[INFO] Image already present in dataset → matched with {meta[best_idx]['image_path']}")
+        return True
+
     return False
 
 
-# ------------------------------------------------------------
-# Predict class using nearest-neighbor FAISS similarity
-# ------------------------------------------------------------
+# -------------------------------------------------------------------------
+# 3. PREDICT SPECIES BASED ON NEAREST NEIGHBOR
+# -------------------------------------------------------------------------
 def predict_class_via_faiss(img_path: Path):
     deep = extract_features(img_path)
     patt = extract_pattern(img_path)
 
-    deep_norm = deep / (np.linalg.norm(deep) + 1e-8)
-    patt_norm = patt / (np.linalg.norm(patt) + 1e-8)
+    deep_norm = deep / (np.linalg.norm(deep) + 1e8)
+    patt_norm = patt / (np.linalg.norm(patt) + 1e8)
     combined = np.concatenate([deep_norm, patt_norm]).astype("float32").reshape(1, -1)
 
-    # Load index + metadata
     index = faiss.read_index(str(FAISS_INDEX_PATH))
-    meta_path = FEATURES_DIR / "combined_feature_db.json"
-    meta = json.load(open(meta_path, "r"))
+    meta = json.load(open(FEATURES_DIR / "combined_feature_db.json", "r"))
 
     distances, indices = index.search(combined, 1)
-    nearest_idx = indices[0][0]
+    predicted_idx = indices[0][0]
+    predicted_class = meta[predicted_idx]["class"]
+    return predicted_class
 
-    return meta[nearest_idx]["class"]
 
-
-# ------------------------------------------------------------
-# Add unknown image into crops + FAISS + metadata
-# ------------------------------------------------------------
+# -------------------------------------------------------------------------
+# 4. ADD UNKNOWN IMAGE TO FAISS + METADATA
+# -------------------------------------------------------------------------
 def add_unknown_image(img_path: Path):
-    print("[INFO] New image detected → Adding to FAISS")
+    print("[INFO] New animal detected → adding to FAISS database")
 
-    # Step 1: Predict class using FAISS nearest neighbor
     predicted_class = predict_class_via_faiss(img_path)
-    print(f"[INFO] Predicted species = {predicted_class}")
+    print(f"[INFO] Assigned species = {predicted_class}")
 
-    # Step 2: Copy into crops/<class>/
-    class_dir = CROPS_DIR / predicted_class
-    class_dir.mkdir(parents=True, exist_ok=True)
+    dest_dir = CROPS_DIR / predicted_class
+    dest_dir.mkdir(parents=True, exist_ok=True)
 
-    copied_path = class_dir / img_path.name
+    copied_path = dest_dir / img_path.name
     shutil.copy(str(img_path), str(copied_path))
-    print(f"[INFO] Copied to {copied_path}")
+    print(f"[INFO] Copied → {copied_path}")
 
-    # Step 3: Extract features
     deep = extract_features(copied_path)
     patt = extract_pattern(copied_path)
 
-    deep_norm = deep / (np.linalg.norm(deep) + 1e-8)
-    patt_norm = patt / (np.linalg.norm(patt) + 1e-8)
+    deep_norm = deep / (np.linalg.norm(deep) + 1e8)
+    patt_norm = patt / (np.linalg.norm(patt) + 1e8)
     combined_vec = np.concatenate([deep_norm, patt_norm]).astype("float32")
 
-    # Step 4: Update FAISS
     index = faiss.read_index(str(FAISS_INDEX_PATH))
     index.add(combined_vec.reshape(1, -1))
     faiss.write_index(index, str(FAISS_INDEX_PATH))
-    print("[INFO] FAISS updated")
+    print("[INFO] FAISS index updated")
 
-    # Step 5: Update metadata
     meta_path = FEATURES_DIR / "combined_feature_db.json"
     meta = json.load(open(meta_path, "r"))
 
     new_entry = {
-        "id": f"{predicted_class}_{len(meta)+1}",
+        "id": f"{predicted_class}_{len(meta) + 1}",
         "class": predicted_class,
         "image_path": str(copied_path),
         "deep_dim": len(deep_norm),
@@ -97,61 +140,47 @@ def add_unknown_image(img_path: Path):
     }
 
     meta.append(new_entry)
-    with open(meta_path, "w") as f:
-        json.dump(meta, f, indent=2)
-
+    json.dump(meta, open(meta_path, "w"), indent=2)
     print("[INFO] Metadata updated")
 
     return copied_path
 
 
-# ------------------------------------------------------------
-# MAIN Recall Pipeline (existing logic + new auto-add)
-# ------------------------------------------------------------
+# -------------------------------------------------------------------------
+# 5. FULL REID PIPELINE
+# -------------------------------------------------------------------------
 def run_recall_pipeline(input_image_path):
     input_image_path = Path(input_image_path)
-    print("[INFO] Running Recall Pipeline...")
+    print("[INFO] Starting Recall Pipeline")
 
-    # --------------------------------------------------------
-    # Condition Check: Is this image already part of FAISS DB?
-    # --------------------------------------------------------
-    if not image_exists_in_db(input_image_path):
-        print("[WARN] Image NOT found in FAISS → Adding it first...")
+    # AUTO-CROP
+    input_image_path = autocrop_if_needed(input_image_path)
+
+    # CHECK VIA FAISS SIMILARITY
+    if not image_exists_in_db_faiss(input_image_path):
+        print("[WARN] Animal not previously seen → adding as new entry")
         input_image_path = add_unknown_image(input_image_path)
     else:
-        print("[INFO] Image already in FAISS. Using existing logic...")
+        print("[INFO] Animal already exists → proceeding to matching")
 
-    # --------------------------------------------------------
-    # Existing logic (unchanged)
-    # --------------------------------------------------------
+    # RETRIEVAL
     ranked_gallery, metrics = image_based_matching(input_image_path, top_k=5)
 
-    if not ranked_gallery:
-        print("[ERROR] No matches found.")
+    if len(ranked_gallery) == 0:
+        print("[ERROR] No match found")
         return None
 
     best = ranked_gallery[0]
     best_image_path = Path(best["image_path"])
-    best_id = best_image_path.parent.name.lower()
+    species = best_image_path.parent.name.lower()
 
     print("\n=== BEST MATCH FOUND ===")
-    print(f"Predicted Animal ID : {best_id}")
-    print(f"Best Match Image    : {best_image_path}")
-
-    # Display image
-    img = cv2.imread(str(best_image_path))
-    if img is not None:
-        cv2.imshow(f"Best Match: {best_id}", img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    print(f"Predicted Species : {species}")
+    print(f"Best Match Image  : {best_image_path}")
 
     return {
-        "predicted_id": best_id,
+        "predicted_species": species,
         "best_match_image": str(best_image_path),
-        "ranked_gallery": ranked_gallery,
     }
 
 
-if __name__ == "__main__":
-    test_img = Path("D:/final_project_code/new_tiger.jpg")
-    run_recall_pipeline(test_img)
