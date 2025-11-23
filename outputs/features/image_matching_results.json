@@ -1,50 +1,50 @@
 {
-  "input_image": "uploaded_images\\auto_crop_deer_0d99ac6e2f.jpg",
+  "input_image": "uploaded_images\\auto_crop_upload.jpg",
   "ranked_gallery": [
     {
       "rank": 1,
-      "id": "deer_45",
-      "class": "deer",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\deer\\deer_0d99ac6e2f.jpg",
+      "id": "tiger_12",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_000041.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.9285807609558105
+      "cosine_score": 0.9428202509880066
     },
     {
       "rank": 2,
-      "id": "deer_39",
-      "class": "deer",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\deer\\deer_0c3d0789f7.jpg",
+      "id": "tiger_301",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_001009.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.7477791905403137
+      "cosine_score": 0.937278687953949
     },
     {
       "rank": 3,
-      "id": "deer_339",
-      "class": "deer",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\deer\\deer_8726643f3f.jpg",
+      "id": "tiger_1245",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_004521.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.7453218102455139
+      "cosine_score": 0.9135494232177734
     },
     {
       "rank": 4,
-      "id": "deer_64",
-      "class": "deer",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\deer\\deer_1433eed2a1.jpg",
+      "id": "tiger_603",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_002121.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.7438262104988098
+      "cosine_score": 0.9044941067695618
     },
     {
       "rank": 5,
-      "id": "deer_179",
-      "class": "deer",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\deer\\deer_417f5fefbf.jpg",
+      "id": "tiger_777",
+      "class": "tiger",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_002745.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.7338953018188477
+      "cosine_score": 0.9039127230644226
     }
   ],
   "metrics": {
