@@ -130,7 +130,7 @@ def extract_and_store(crops_dir):
     if not crops_dir.exists():
         raise ValueError("Crops dir does not exist")
 
-    # 1️⃣ Clear previous FAISS + metadata
+    # 1️ Clear previous FAISS + metadata
     PREPROC_DIR_PATH = Path(PREPROC_DIR)
     PREPROC_DIR_PATH.mkdir(parents=True, exist_ok=True)
     for f in ["faiss_index.ivfpq", "metadata.json", "embeddings.npy"]:
@@ -141,7 +141,7 @@ def extract_and_store(crops_dir):
 
     fine_tune_resnet_once(crops_dir)
 
-    # 2️⃣ Collect crops
+    # 2️ Collect crops
     all_crops = sorted([p for p in crops_dir.rglob("*_annotated.jpg")])
     if not all_crops:
         all_crops = sorted([p for p in crops_dir.rglob("*.jpg")])
@@ -149,7 +149,7 @@ def extract_and_store(crops_dir):
     if not all_crops:
         raise RuntimeError("No crops found in folder!")
 
-    # 3️⃣ Extract features
+    # 3️ Extract features
     model = get_embedding_model()
     tfm = _get_tfms(train=False)
 
@@ -175,7 +175,7 @@ def extract_and_store(crops_dir):
     index = create_or_load_index(dim)
     add_vectors(index, feats_arr, metas)
 
-    # 4️⃣ Save FAISS + embeddings
+    # 4️ Save FAISS + embeddings
     FAISS_PATH = PREPROC_DIR_PATH / "faiss_index.ivfpq"
     EMBED_PATH = PREPROC_DIR_PATH / "embeddings.npy"
 
