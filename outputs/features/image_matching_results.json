@@ -3,48 +3,48 @@
   "ranked_gallery": [
     {
       "rank": 1,
-      "id": "tiger_12",
+      "id": "tiger_6",
       "class": "tiger",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_000041.jpg",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_000018.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.9428202509880066
+      "cosine_score": 0.9890843629837036
     },
     {
       "rank": 2,
-      "id": "tiger_301",
+      "id": "tiger_569",
       "class": "tiger",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_001009.jpg",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_001987.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.937278687953949
+      "cosine_score": 0.9440888166427612
     },
     {
       "rank": 3,
-      "id": "tiger_1245",
+      "id": "tiger_782",
       "class": "tiger",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_004521.jpg",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_002761.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.9135494232177734
+      "cosine_score": 0.9428342580795288
     },
     {
       "rank": 4,
-      "id": "tiger_603",
+      "id": "tiger_200",
       "class": "tiger",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_002121.jpg",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_000708.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.9044941067695618
+      "cosine_score": 0.9428027868270874
     },
     {
       "rank": 5,
-      "id": "tiger_777",
+      "id": "tiger_453",
       "class": "tiger",
-      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_002745.jpg",
+      "image_path": "D:\\final_project_code\\outputs\\crops\\tiger\\tiger_001568.jpg",
       "deep_dim": 2048,
       "pattern_dim": 202,
-      "cosine_score": 0.9039127230644226
+      "cosine_score": 0.9421855807304382
     }
   ],
   "metrics": {

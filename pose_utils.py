@@ -54,7 +54,7 @@ def extract_pose_named(pose_model_type, pose_model, crop_bgr, conf_thresh=0.3):
 
         r = results[0]
 
-        # --- YOLOv11/YOLOv8 pose structure handling ---
+        # --- YOLOv11 pose structure handling ---
         try:
             kps = None
             if hasattr(r, "keypoints") and r.keypoints is not None:
