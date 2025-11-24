@@ -6,7 +6,7 @@ export function StatsBar() {
     {
       icon: Database,
       label: "Animals in Database",
-      value: "3670",
+      value: "3714",
       color: "emerald",
     },
     {
