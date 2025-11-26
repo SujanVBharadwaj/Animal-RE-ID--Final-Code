@@ -96,7 +96,6 @@ def extract_pose_named(pose_model_type, pose_model, crop_bgr, conf_thresh=0.3):
                     named["lowerback"] = (mx, my, (left[2] + right[2]) / 2.0)
                 else:
                     named["lowerback"] = None
-
                 return named
             else:
                 return {}
